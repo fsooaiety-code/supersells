@@ -1,7 +1,6 @@
 buildscript {
     repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.blamejared.com' }
+        maven { url = 'https://maven.minecraftforge.net/' }
         mavenCentral()
     }
     dependencies {
@@ -25,19 +24,6 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                supersells {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-
             mods {
                 supersells {
                     source sourceSets.main
@@ -47,19 +33,32 @@ minecraft {
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
 repositories {
-    maven { url = 'https://maven.blamejared.com' }
+    maven { url = 'https://maven.minecraftforge.net/' }
+
+    maven {
+        name = "AE2 Maven"
+        url = "https://maven.tterrag.com/"
+    }
+
+    mavenCentral()
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
 
-    // AE2
     implementation fg.deobf("appeng:appliedenergistics2:8.4.7")
 }
 
 jar {
-    finalizedBy('reobfJar')
+    manifest {
+        attributes([
+                "Specification-Title": "supersells",
+                "Specification-Vendor": "supersells",
+                "Specification-Version": "1",
+                "Implementation-Title": project.name,
+                "Implementation-Version": project.version,
+                "Implementation-Vendor": "supersells"
+        ])
+    }
 }
