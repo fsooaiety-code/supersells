@@ -20,6 +20,17 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 minecraft {
     mappings channel: 'official', version: '1.16.5'
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            mods {
+                supersells {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
 }
 
 repositories {
@@ -27,12 +38,28 @@ repositories {
     mavenCentral()
 
     maven {
-        name = "AE2 Maven"
-        url = "https://maven.tilera.xyz/"
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
     }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
-    implementation fg.deobf("appeng:appliedenergistics2:8.4.7")
+
+    implementation fg.deobf("curse.maven:applied-energistics-2-223794:3859415")
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": "supersells",
+                "Specification-Vendor": "supersells",
+                "Specification-Version": "1",
+                "Implementation-Title": project.name,
+                "Implementation-Version": project.version,
+                "Implementation-Vendor": "supersells"
+        ])
+    }
 }
